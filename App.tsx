@@ -4,17 +4,23 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import ApolloClient, { gql } from 'apollo-boost';
+import { ApolloProvider } from '@apollo/react-hooks';
 
 import HomeScreen from './src/Screens/HomeScreen';
 import LoginScreen from './src/Screens/LoginScreen';
 import SignupScreen from './src/Screens/SignupScreen';
+
+const client = new ApolloClient({
+  uri: 'http://localhost:4000',
+});
 
 const Stack = createStackNavigator();
 
 export default function App() {
   const isSignedIn = false;
   return (
-    <>
+    <ApolloProvider client={client}>
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider {...eva} theme={eva.light}>
         <NavigationContainer>
@@ -32,6 +38,18 @@ export default function App() {
           </Stack.Navigator>
         </NavigationContainer>
       </ApplicationProvider>
-    </>
+    </ApolloProvider>
   );
 }
+
+client
+  .query({
+    query: gql`
+      {
+        findAllUsers {
+          email
+        }
+      }
+    `,
+  })
+  .then((result) => console.log(result));
