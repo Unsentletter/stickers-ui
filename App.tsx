@@ -8,11 +8,19 @@ import LoginScreen from './src/Screens/LoginScreen';
 const Stack = createStackNavigator();
 
 export default function App() {
+  const isSignedIn = true;
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Home'>
-        <Stack.Screen name='Home' component={HomeScreen} />
-        <Stack.Screen name='Login' component={LoginScreen} />
+        {isSignedIn ? (
+          <>
+            <Stack.Screen name='Home' component={HomeScreen} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen name='Login' component={LoginScreen} />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
