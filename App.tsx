@@ -19,7 +19,14 @@ const client = new ApolloClient({
 const Stack = createStackNavigator();
 
 export default function App() {
-  const isSignedIn = false;
+  const isSignedIn = () => {
+    return AsyncStorage.getItem('sessionToken').then((token) => {
+      if (!token) {
+        return false;
+      }
+      return true;
+    });
+  };
 
   return (
     <ApolloProvider client={client}>
@@ -27,7 +34,7 @@ export default function App() {
       <ApplicationProvider {...eva} theme={eva.light}>
         <NavigationContainer>
           <Stack.Navigator initialRouteName='Home'>
-            {!isSignedIn ? (
+            {!isSignedIn() ? (
               <>
                 <Stack.Screen name='Signup' component={SignupScreen} />
                 <Stack.Screen name='Login' component={LoginScreen} />

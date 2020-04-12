@@ -24,7 +24,6 @@ const SignupScreen = () => {
 
   const showButton = () => {
     if (name && email && password.length > 5) {
-      console.log('HIT', password.length);
       return false;
     }
     return true;
@@ -32,8 +31,8 @@ const SignupScreen = () => {
 
   const signupUser = async () => {
     await addUser({ variables: { name, email, password } });
-    console.log('DATA', data.signup.token);
-    AsyncStorage.setItem('sessionToken', data.signup.token);
+    console.log('TOKEN', data.signup.token);
+    await AsyncStorage.setItem('sessionToken', data.signup.token);
   };
 
   return (
