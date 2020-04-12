@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import { View, TouchableWithoutFeedback, Button } from 'react-native';
-import { Layout, Icon, Input } from '@ui-kitten/components';
+import { View, TouchableWithoutFeedback, AsyncStorage } from 'react-native';
+import { Button, Icon, Input } from '@ui-kitten/components';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 
 const SignupScreen = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isDisabled, setIsDisabled] = useState(true);
   //   const { loading, error, data } = useQuery(test);
   const [addUser, { data }] = useMutation(ADD_USER);
   // TODO - I will use this to toggle the password text
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-
-  console.log('TEST', data);
 
   const renderIcon = (props) => (
     <TouchableWithoutFeedback
@@ -20,24 +22,43 @@ const SignupScreen = () => {
     </TouchableWithoutFeedback>
   );
 
-  const email = '123@email.com';
-  const name = 'Rdoger';
-  const password = '123456';
+  const showButton = () => {
+    if (name && email && password.length > 5) {
+      console.log('HIT', password.length);
+      return false;
+    }
+    return true;
+  };
+
+  const signupUser = async () => {
+    await addUser({ variables: { name, email, password } });
+    console.log('DATA', data.signup.token);
+    AsyncStorage.setItem('sessionToken', data.signup.token);
+  };
 
   return (
     <View>
-      <Input label='Name' />
-      <Input label='Email' />
+      <Input
+        label='Name'
+        onChangeText={(nextValue) => setName(nextValue)}
+        value={name}
+      />
+      <Input
+        label='Email'
+        onChangeText={(nextValue) => setEmail(nextValue)}
+        value={email}
+      />
       <Input
         label='Password'
         caption='Should be 6 or more characters'
         secureTextEntry={secureTextEntry}
         accessoryRight={renderIcon}
+        onChangeText={(nextValue) => setPassword(nextValue)}
+        value={password}
       />
-      <Button
-        title='Press'
-        onPress={() => addUser({ variables: { name, email, password } })}
-      />
+      <Button onPress={signupUser} disabled={showButton()}>
+        Submit
+      </Button>
     </View>
   );
 };
