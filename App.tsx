@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as eva from '@eva-design/eva';
@@ -6,11 +6,11 @@ import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import ApolloClient, { gql } from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
-
-import HomeScreen from './src/Screens/HomeScreen';
-import LoginScreen from './src/Screens/LoginScreen';
-import SignupScreen from './src/Screens/SignupScreen';
 import { AsyncStorage } from 'react-native';
+
+import HomeScreen from './src/screens/HomeScreen';
+import LoginScreen from './src/screens/LoginScreen';
+import SignupScreen from './src/screens/SignupScreen';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000',
