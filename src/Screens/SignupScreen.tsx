@@ -3,15 +3,17 @@ import { View, TouchableWithoutFeedback, AsyncStorage } from 'react-native';
 import { Button, Icon, Input } from '@ui-kitten/components';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-const SignupScreen = () => {
+import { addUser } from '../actions/UserActions';
+
+const SignupScreen = (props) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isDisabled, setIsDisabled] = useState(true);
   //   const { loading, error, data } = useQuery(test);
   const [addUser, { data }] = useMutation(ADD_USER);
-  // TODO - I will use this to toggle the password text
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   const renderIcon = (props) => (
@@ -31,8 +33,11 @@ const SignupScreen = () => {
 
   const signupUser = async () => {
     await addUser({ variables: { name, email, password } });
-    console.log('TOKEN', data.signup.token);
+    console.log('SIGNUP DATA', data);
+    data.signup.user.isSignedIn = true;
+    props.addUser(data.signup.user);
     await AsyncStorage.setItem('sessionToken', data.signup.token);
+    props.navigation.navigate('Home');
   };
 
   return (
@@ -62,7 +67,15 @@ const SignupScreen = () => {
   );
 };
 
-export default SignupScreen;
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      addUser,
+    },
+    dispatch,
+  );
+
+export default connect(null, mapDispatchToProps)(SignupScreen);
 
 const ADD_USER = gql`
   mutation SignupUser($name: String!, $email: String!, $password: String!) {
@@ -71,7 +84,7 @@ const ADD_USER = gql`
         id
         name
         email
-        password
+        ischild
       }
       token
     }
