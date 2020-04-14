@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as eva from '@eva-design/eva';
@@ -7,58 +7,62 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import ApolloClient, { gql } from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { AsyncStorage } from 'react-native';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 
-import HomeScreen from './src/screens/HomeScreen';
-import LoginScreen from './src/screens/LoginScreen';
-import SignupScreen from './src/screens/SignupScreen';
+import userReducer from './src/reducers/UserReducer';
+import { MainNavigator } from './src/navigation/Main.navigator';
+import { AppRoute } from './src/navigation/AppRoutes';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000',
 });
 
-const Stack = createStackNavigator();
+const store = createStore(userReducer);
 
 export default function App() {
-  const isSignedIn = () => {
-    return AsyncStorage.getItem('sessionToken').then((token) => {
-      if (!token) {
-        return false;
-      }
-      return true;
-    });
-  };
+  // const [isSignedIn, setIsSignedIn] = useState(false);
+  // useEffect(() => {
+  //   checkSignedIn();
+  // });
+
+  // const checkSignedIn = async () => {
+  //   const token = await AsyncStorage.getItem('sessionToken');
+  //   console.log('token', token);
+  //   if (!token) {
+  //     return setIsSignedIn(false);
+  //   }
+  //   return setIsSignedIn(true);
+  // };
+
+  // console.log(isSignedIn);
+
+  const isAuthorised = false;
 
   return (
     <ApolloProvider client={client}>
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider {...eva} theme={eva.light}>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName='Home'>
-            {!isSignedIn() ? (
-              <>
-                <Stack.Screen name='Signup' component={SignupScreen} />
-                <Stack.Screen name='Login' component={LoginScreen} />
-              </>
-            ) : (
-              <>
-                <Stack.Screen name='Home' component={HomeScreen} />
-              </>
-            )}
-          </Stack.Navigator>
-        </NavigationContainer>
+        <Provider store={store}>
+          <NavigationContainer>
+            <MainNavigator
+              initialRouteName={isAuthorised ? AppRoute.HOME : AppRoute.AUTH}
+            />
+          </NavigationContainer>
+        </Provider>
       </ApplicationProvider>
     </ApolloProvider>
   );
 }
 
-client
-  .query({
-    query: gql`
-      {
-        findAllUsers {
-          email
-        }
-      }
-    `,
-  })
-  .then((result) => console.log(result));
+// client
+//   .query({
+//     query: gql`
+//       {
+//         findAllUsers {
+//           email
+//         }
+//       }
+//     `,
+//   })
+//   .then((result) => console.log(result));
