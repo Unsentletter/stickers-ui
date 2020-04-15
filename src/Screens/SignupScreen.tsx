@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { addUser } from '../actions/UserActions';
+import { AppRoute } from '../navigation/AppRoutes';
 
 const SignupScreen = (props) => {
   const [name, setName] = useState('');
@@ -37,7 +38,7 @@ const SignupScreen = (props) => {
     data.signup.user.isSignedIn = true;
     props.addUser(data.signup.user);
     await AsyncStorage.setItem('sessionToken', data.signup.token);
-    props.navigation.navigate('Home');
+    props.navigation.navigate(AppRoute.HOME);
   };
 
   return (
