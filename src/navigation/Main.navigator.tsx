@@ -7,7 +7,7 @@ import { AppRoute } from './AppRoutes';
 const Stack = createStackNavigator();
 
 export const MainNavigator = (props): React.ReactElement => (
-  <Stack.Navigator {...props}>
+  <Stack.Navigator {...props} headerMode='none'>
     <Stack.Screen name={AppRoute.AUTH} component={AuthNavigator} />
     <Stack.Screen name={AppRoute.HOME} component={AppNavigator} />
   </Stack.Navigator>

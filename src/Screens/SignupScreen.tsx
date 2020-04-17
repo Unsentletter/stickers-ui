@@ -61,9 +61,8 @@ const SignupScreen = (props) => {
         onChangeText={(nextValue) => setPassword(nextValue)}
         value={password}
       />
-      <Button onPress={signupUser} disabled={showButton()}>
-        Submit
-      </Button>
+      {/* <Button onPress={signupUser} disabled={showButton()}> */}
+      <Button onPress={signupUser}>Submit</Button>
     </View>
   );
 };
