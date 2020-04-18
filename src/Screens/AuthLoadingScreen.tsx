@@ -4,8 +4,14 @@ import { AppRoute } from '../navigation/AppRoutes';
 
 const AuthLoadingScreen = ({ navigation }) => {
   useEffect(() => {
-    bootstrapAsync();
+    bootstrapAsync;
   }, []);
+  useEffect(() => {
+    const logout = navigation.addListener('focus', () => {
+      bootstrapAsync();
+    });
+    return logout;
+  }, [navigation]);
   const bootstrapAsync = async () => {
     const userToken = await AsyncStorage.getItem('sessionToken');
     navigation.navigate(userToken ? AppRoute.HOME : AppRoute.AUTH);

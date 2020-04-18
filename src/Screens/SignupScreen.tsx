@@ -13,7 +13,6 @@ const SignupScreen = (props) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  //   const { loading, error, data } = useQuery(test);
   const [addUser, { data }] = useMutation(ADD_USER);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
@@ -34,7 +33,6 @@ const SignupScreen = (props) => {
 
   const signupUser = async () => {
     await addUser({ variables: { name, email, password } });
-    console.log('SIGNUP DATA', data);
     data.signup.user.isSignedIn = true;
     props.addUser(data.signup.user);
     await AsyncStorage.setItem('sessionToken', data.signup.token);
