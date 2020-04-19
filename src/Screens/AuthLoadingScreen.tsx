@@ -1,8 +1,15 @@
 import React, { useEffect } from 'react';
 import { AsyncStorage, View, ActivityIndicator, StatusBar } from 'react-native';
 import { AppRoute } from '../navigation/AppRoutes';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { addUser } from '../actions/UserActions';
 
-const AuthLoadingScreen = ({ navigation }) => {
+const AuthLoadingScreen = ({ navigation, addUser }) => {
+  const { data, loading, error } = useQuery(GET_USER);
+
   useEffect(() => {
     bootstrapAsync;
   }, []);
@@ -12,9 +19,21 @@ const AuthLoadingScreen = ({ navigation }) => {
     });
     return logout;
   }, [navigation]);
+  useEffect(() => {
+    bootstrapAsync();
+  }, [data]);
   const bootstrapAsync = async () => {
     const userToken = await AsyncStorage.getItem('sessionToken');
-    navigation.navigate(userToken ? AppRoute.HOME : AppRoute.AUTH);
+    if (!userToken) {
+      return navigation.navigate(AppRoute.AUTH);
+    }
+    if (data) {
+      addUser(data.getUser);
+    } else {
+      // TODO - add error message here
+      console.error('NO DATA');
+    }
+    return navigation.navigate(AppRoute.HOME);
   };
   return (
     <View>
@@ -24,4 +43,19 @@ const AuthLoadingScreen = ({ navigation }) => {
   );
 };
 
-export default AuthLoadingScreen;
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ addUser }, dispatch);
+};
+export default connect(null, mapDispatchToProps)(AuthLoadingScreen);
+
+const GET_USER = gql`
+  {
+    getUser {
+      id
+      email
+      name
+      ischild
+      created_at
+    }
+  }
+`;

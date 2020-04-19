@@ -11,9 +11,18 @@ import { createStore } from 'redux';
 import userReducer from './src/reducers/UserReducer';
 import { MainNavigator } from './src/navigation/Main.navigator';
 import { AppRoute } from './src/navigation/AppRoutes';
+import { AsyncStorage } from 'react-native';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000',
+  request: async (operation) => {
+    const token = await AsyncStorage.getItem('sessionToken');
+    operation.setContext({
+      headers: {
+        authorization: token ? `Bearer ${token}` : '',
+      },
+    });
+  },
 });
 
 const store = createStore(userReducer);
@@ -32,15 +41,3 @@ export default function App() {
     </ApolloProvider>
   );
 }
-
-// client
-//   .query({
-//     query: gql`
-//       {
-//         findAllUsers {
-//           email
-//         }
-//       }
-//     `,
-//   })
-//   .then((result) => console.log(result));

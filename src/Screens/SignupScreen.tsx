@@ -59,7 +59,6 @@ const SignupScreen = (props) => {
         onChangeText={(nextValue) => setPassword(nextValue)}
         value={password}
       />
-      {/* <Button onPress={signupUser} disabled={showButton()}> */}
       <Button onPress={signupUser} disabled={showButton()}>
         Submit
       </Button>
@@ -87,14 +86,6 @@ const ADD_USER = gql`
         ischild
       }
       token
-    }
-  }
-`;
-
-const test = gql`
-  {
-    findAllUsers {
-      email
     }
   }
 `;
