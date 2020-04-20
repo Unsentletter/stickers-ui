@@ -30,8 +30,8 @@ const AuthLoadingScreen = ({ navigation, addUser }) => {
     if (data) {
       addUser(data.getUser);
     } else {
-      // TODO - add error message here
-      console.error('NO DATA');
+      // TODO - add error message here that doesnt throw an error
+      console.log('NO DATA');
     }
     return navigation.navigate(AppRoute.HOME);
   };

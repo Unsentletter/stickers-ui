@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, TouchableWithoutFeedback, AsyncStorage } from 'react-native';
 import { Button, Icon, Input } from '@ui-kitten/components';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
