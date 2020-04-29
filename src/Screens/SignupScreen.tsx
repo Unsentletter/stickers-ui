@@ -6,7 +6,6 @@ import {
   TextInput,
   Button,
 } from 'react-native';
-// import { Button, Icon, Input } from '@ui-kitten/components';
 import { useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import { bindActionCreators } from 'redux';

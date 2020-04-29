@@ -1,8 +1,5 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-// import * as eva from '@eva-design/eva';
-// import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
-// import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import ApolloClient, { gql } from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { Provider } from 'react-redux';
