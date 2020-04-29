@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 import { addUser } from '../actions/UserActions';
 import { AppRoute } from '../navigation/AppRoutes';
 
-const SignupScreen = (props) => {
+export const SignupScreen = (props) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -49,6 +49,7 @@ const SignupScreen = (props) => {
       <TextInput
         onChangeText={(nextValue) => setName(nextValue)}
         value={name}
+        testID='nameInput'
       />
       <TextInput
         onChangeText={(nextValue) => setEmail(nextValue)}
@@ -78,7 +79,7 @@ const mapDispatchToProps = (dispatch) =>
 
 export default connect(null, mapDispatchToProps)(SignupScreen);
 
-const ADD_USER = gql`
+export const ADD_USER = gql`
   mutation SignupUser($name: String!, $email: String!, $password: String!) {
     signup(name: $name, email: $email, password: $password) {
       user {
