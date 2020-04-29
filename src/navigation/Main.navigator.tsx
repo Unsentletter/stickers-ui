@@ -4,7 +4,6 @@ import { AuthNavigator } from './Auth.navigator';
 import { AppNavigator } from './App.navigator';
 import { AppRoute } from './AppRoutes';
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
-import App from '../../App';
 
 const Stack = createStackNavigator();
 

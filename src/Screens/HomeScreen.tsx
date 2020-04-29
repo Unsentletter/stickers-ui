@@ -7,10 +7,14 @@ import { IUser } from '../types/User';
 import { AppRoute } from '../navigation/AppRoutes';
 
 const HomeScreen = ({ navigation, user }: HomeScreenProps) => {
+  console.log('USER', user);
   return (
     <View>
       <Text>HOME SCREEN</Text>
       <Text>USER: {user.name}</Text>
+      <Button onPress={() => navigation.navigate(AppRoute.ADD_CHILD)}>
+        Add a child
+      </Button>
       <Button
         mode='contained'
         onPress={() => {
@@ -29,8 +33,8 @@ const mapStateToProps = (state) => {
   return { user };
 };
 
-export default connect(mapStateToProps)(HomeScreen);
-
 type HomeScreenProps = {
   user: IUser;
 };
+
+export default connect(mapStateToProps)(HomeScreen);

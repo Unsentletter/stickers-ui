@@ -34,6 +34,7 @@ const AuthLoadingScreen = ({ navigation, addUser }) => {
     if (!userToken) {
       return navigation.navigate(AppRoute.AUTH);
     }
+    console.log('TOKEN', userToken);
     if (data) {
       addUser(data.getUser);
     } else {
@@ -65,6 +66,7 @@ const GET_USER = gql`
       name
       ischild
       created_at
+      children
     }
   }
 `;
