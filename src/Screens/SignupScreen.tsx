@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
-import { View, TouchableWithoutFeedback, AsyncStorage } from 'react-native';
-import { Button, Icon, Input } from '@ui-kitten/components';
+import {
+  View,
+  TouchableWithoutFeedback,
+  AsyncStorage,
+  TextInput,
+  Button,
+} from 'react-native';
+// import { Button, Icon, Input } from '@ui-kitten/components';
 import { useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import { bindActionCreators } from 'redux';
@@ -16,13 +22,13 @@ const SignupScreen = (props) => {
   const [addUser, { data }] = useMutation(ADD_USER);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
-  const renderIcon = (props) => (
-    <TouchableWithoutFeedback
-      onPress={() => setSecureTextEntry(!secureTextEntry)}
-    >
-      <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
-    </TouchableWithoutFeedback>
-  );
+  // const renderIcon = (props) => (
+  //   <TouchableWithoutFeedback
+  //     onPress={() => setSecureTextEntry(!secureTextEntry)}
+  //   >
+  //     <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
+  //   </TouchableWithoutFeedback>
+  // );
 
   const showButton = () => {
     if (name && email && password.length > 5) {
@@ -41,27 +47,24 @@ const SignupScreen = (props) => {
 
   return (
     <View>
-      <Input
-        label='Name'
+      <TextInput
         onChangeText={(nextValue) => setName(nextValue)}
         value={name}
       />
-      <Input
-        label='Email'
+      <TextInput
         onChangeText={(nextValue) => setEmail(nextValue)}
         value={email}
       />
-      <Input
-        label='Password'
-        caption='Should be 6 or more characters'
+      <TextInput
         secureTextEntry={secureTextEntry}
-        accessoryRight={renderIcon}
         onChangeText={(nextValue) => setPassword(nextValue)}
         value={password}
       />
-      <Button onPress={signupUser} disabled={showButton()}>
-        Submit
-      </Button>
+      <Button
+        onPress={signupUser}
+        disabled={showButton()}
+        title='Submit'
+      ></Button>
     </View>
   );
 };
