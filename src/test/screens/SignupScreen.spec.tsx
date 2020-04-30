@@ -26,6 +26,8 @@ const mocks = [
 describe('SignupScreen', () => {
   describe('test', () => {
     const nameText = 'Tbag';
+    const emailText = 'test@email.com';
+    const passwordText = '123456';
 
     let getByTestId;
 
@@ -35,12 +37,28 @@ describe('SignupScreen', () => {
           <SignupScreen />
         </MockedProvider>,
       ));
-      //   fireEvent.changeText(getByTestId('messageText'), nameText);
-      //   fireEvent.press(getByTestId('nameText').props.value).toEqual('');
+      fireEvent.changeText(getByTestId('nameInput'), '');
+      fireEvent.changeText(getByTestId('emailInput'), '');
+      fireEvent.changeText(getByTestId('passwordInput'), '');
+      // fireEvent.press(getByTestId('nameText').props.value).toEqual('');
     });
 
-    it('initially renders an empty field', () => {
+    it('initially renders empty inputs', () => {
       expect(getByTestId('nameInput').props.value).toEqual('');
+      expect(getByTestId('emailInput').props.value).toEqual('');
+      expect(getByTestId('passwordInput').props.value).toEqual('');
+    });
+    it('should render text when name is entered', () => {
+      fireEvent.changeText(getByTestId('nameInput'), nameText);
+      expect(getByTestId('nameInput').props.value).toEqual('Tbag');
+    });
+    it('should render text when email is entered', () => {
+      fireEvent.changeText(getByTestId('emailInput'), emailText);
+      expect(getByTestId('emailInput').props.value).toEqual('test@email.com');
+    });
+    it('should render text when name is entered', () => {
+      fireEvent.changeText(getByTestId('passwordInput'), passwordText);
+      expect(getByTestId('passwordInput').props.value).toEqual('123456');
     });
   });
 });

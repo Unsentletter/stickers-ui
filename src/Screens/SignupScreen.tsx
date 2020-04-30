@@ -54,11 +54,13 @@ export const SignupScreen = (props) => {
       <TextInput
         onChangeText={(nextValue) => setEmail(nextValue)}
         value={email}
+        testID='emailInput'
       />
       <TextInput
         secureTextEntry={secureTextEntry}
         onChangeText={(nextValue) => setPassword(nextValue)}
         value={password}
+        testID='passwordInput'
       />
       <Button
         onPress={signupUser}
