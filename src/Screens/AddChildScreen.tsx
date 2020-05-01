@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, TouchableWithoutFeedback } from 'react-native';
-import { Button, Input, Icon } from '@ui-kitten/components';
 import { useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { TextInput, Button } from 'react-native-paper';
 
 import { addChildToUser } from '../actions/UserActions';
 import { IUser } from '../types/User';
@@ -25,27 +25,25 @@ const AddChildScreen = ({ user, addChildToUser }: AddChildScreenProps) => {
     addChildToUser(data.createChildAccount);
   };
 
-  const renderIcon = (props) => (
-    <TouchableWithoutFeedback
-      onPress={() => setSecureTextEntry(!secureTextEntry)}
-    >
-      <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
-    </TouchableWithoutFeedback>
-  );
+  // const renderIcon = (props) => (
+  //   <TouchableWithoutFeedback
+  //     onPress={() => setSecureTextEntry(!secureTextEntry)}
+  //   >
+  //     <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
+  //   </TouchableWithoutFeedback>
+  // );
 
   return (
     <View>
       <Text>Add Child screen</Text>
-      <Input
+      <TextInput
         label='Name'
         onChangeText={(nextValue) => setName(nextValue)}
         value={name}
       />
-      <Input
+      <TextInput
         label='Password'
-        caption='Should be 6 or more characters'
         secureTextEntry={secureTextEntry}
-        accessoryRight={renderIcon}
         onChangeText={(nextValue) => setPassword(nextValue)}
         value={password}
       />
@@ -64,6 +62,7 @@ const mapDispatchToProps = (dispatch) =>
 
 const mapStateToProps = (state) => {
   const user = state.user;
+  console.log('MSTP', state);
   return { user };
 };
 
