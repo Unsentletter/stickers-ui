@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
-import {
-  View,
-  TouchableWithoutFeedback,
-  AsyncStorage,
-  TextInput,
-  Button,
-} from 'react-native';
+import { View, TouchableWithoutFeedback, AsyncStorage } from 'react-native';
 import { useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { TextInput, Button } from 'react-native-paper';
 
 import { addUser } from '../actions/UserActions';
 import { AppRoute } from '../navigation/AppRoutes';
@@ -39,6 +34,7 @@ export const SignupScreen = (props) => {
   const signupUser = async () => {
     await addUser({ variables: { name, email, password } });
     data.signup.user.isSignedIn = true;
+    console.log('SIGN UP USER FN', data);
     props.addUser(data.signup.user);
     await AsyncStorage.setItem('sessionToken', data.signup.token);
     props.navigation.navigate(AppRoute.HOME);
@@ -47,26 +43,32 @@ export const SignupScreen = (props) => {
   return (
     <View>
       <TextInput
+        label='Name'
         onChangeText={(nextValue) => setName(nextValue)}
         value={name}
         testID='nameInput'
       />
       <TextInput
+        label='Email'
         onChangeText={(nextValue) => setEmail(nextValue)}
         value={email}
         testID='emailInput'
       />
       <TextInput
+        label='Password'
         secureTextEntry={secureTextEntry}
         onChangeText={(nextValue) => setPassword(nextValue)}
         value={password}
         testID='passwordInput'
       />
       <Button
+        mode='contained'
         onPress={signupUser}
         disabled={showButton()}
-        title='Submit'
-      ></Button>
+        testID='submitButton'
+      >
+        Submit
+      </Button>
     </View>
   );
 };

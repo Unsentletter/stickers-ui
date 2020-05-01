@@ -4,6 +4,7 @@ import ApolloClient, { gql } from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
+import { Provider as PaperProvider } from 'react-native-paper';
 
 import userReducer from './src/reducers/UserReducer';
 import { MainNavigator } from './src/navigation/Main.navigator';
@@ -28,9 +29,11 @@ export default function App() {
   return (
     <ApolloProvider client={client}>
       <Provider store={store}>
-        <NavigationContainer>
-          <MainNavigator initialRouteName={AppRoute.AUTH_LOADING} />
-        </NavigationContainer>
+        <PaperProvider>
+          <NavigationContainer>
+            <MainNavigator initialRouteName={AppRoute.AUTH_LOADING} />
+          </NavigationContainer>
+        </PaperProvider>
       </Provider>
     </ApolloProvider>
   );
