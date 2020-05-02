@@ -13,17 +13,24 @@ const AuthLoadingScreen = ({ navigation, addUser }) => {
   useEffect(() => {
     bootstrapAsync;
   }, []);
+
   useEffect(() => {
     const logout = navigation.addListener('focus', () => {
       bootstrapAsync();
     });
     return logout;
   }, [navigation]);
+
   useEffect(() => {
     bootstrapAsync();
   }, [data]);
+
   const bootstrapAsync = async () => {
     const userToken = await AsyncStorage.getItem('sessionToken');
+
+    // Need to make use of these bad boys
+    // if (loading) console.log(loading);
+    // if (error) console.log('ERROR', error);
     if (!userToken) {
       return navigation.navigate(AppRoute.AUTH);
     }
@@ -31,10 +38,12 @@ const AuthLoadingScreen = ({ navigation, addUser }) => {
       addUser(data.getUser);
     } else {
       // TODO - add error message here that doesnt throw an error
+      // Maybe nav to signup
       console.log('NO DATA');
     }
     return navigation.navigate(AppRoute.HOME);
   };
+
   return (
     <View>
       <ActivityIndicator />
