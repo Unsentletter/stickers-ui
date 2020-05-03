@@ -13,7 +13,11 @@ export const SignupScreen = (props) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [addUser, { data }] = useMutation(ADD_USER);
+  const [addUser, { data, loading, error }] = useMutation(ADD_USER, {
+    onCompleted(data) {
+      saveUserDataLocally(data);
+    },
+  });
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   // const renderIcon = (props) => (
@@ -33,10 +37,12 @@ export const SignupScreen = (props) => {
 
   const signupUser = async () => {
     await addUser({ variables: { name, email, password } });
-    data.signup.user.isSignedIn = true;
-    console.log('SIGN UP USER FN', data);
-    props.addUser(data.signup.user);
-    await AsyncStorage.setItem('sessionToken', data.signup.token);
+  };
+
+  const saveUserDataLocally = async (mutationData) => {
+    mutationData.signup.user.isSignedIn = true;
+    props.addUser(mutationData.signup.user);
+    await AsyncStorage.setItem('sessionToken', mutationData.signup.token);
     props.navigation.navigate(AppRoute.HOME);
   };
 
@@ -84,7 +90,7 @@ const mapDispatchToProps = (dispatch) =>
 export default connect(null, mapDispatchToProps)(SignupScreen);
 
 export const ADD_USER = gql`
-  mutation SignupUser($name: String!, $email: String!, $password: String!) {
+  mutation SignUp($name: String!, $email: String!, $password: String!) {
     signup(name: $name, email: $email, password: $password) {
       user {
         id
