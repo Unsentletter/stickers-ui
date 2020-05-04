@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Text, View, TouchableWithoutFeedback } from 'react-native';
 import { useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
@@ -13,15 +13,20 @@ const AddChildScreen = ({ user, addChildToUser }: AddChildScreenProps) => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const [createChildAccount, { data }] = useMutation(CREATE_CHILD_ACCOUNT);
-
-  useEffect(() => {
-    console.log('PROPS', user);
-  }, [user]);
+  const [children, setChildren] = useState<IUser[]>([]);
+  const [createChildAccount, { data }] = useMutation(CREATE_CHILD_ACCOUNT, {
+    onCompleted(data) {
+      const { createChildAccount } = data;
+      const childrenArray =
+        children.length > 0
+          ? [...children, createChildAccount]
+          : [createChildAccount];
+      setChildren(childrenArray);
+    },
+  });
 
   const addSingleChild = async () => {
     await createChildAccount({ variables: { name, password } });
-    console.log('DATA', data);
     addChildToUser(data.createChildAccount);
   };
 
@@ -48,6 +53,11 @@ const AddChildScreen = ({ user, addChildToUser }: AddChildScreenProps) => {
         value={password}
       />
       <Button onPress={addSingleChild}>Add child</Button>
+      {children.length > 1
+        ? children.map((child) => {
+            return <Text key={child.id}>{child.name}</Text>;
+          })
+        : null}
     </View>
   );
 };
