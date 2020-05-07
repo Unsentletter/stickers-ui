@@ -10,6 +10,6 @@ const Stack = createStackNavigator();
 export const AuthNavigator = (): React.ReactElement => (
   <Stack.Navigator>
     <Stack.Screen name={AppRoute.SIGN_UP} component={SignupScreen} />
-    <Stack.Screen name={AppRoute.LOGIN} component={LoginScreen} />
+    <Stack.Screen name={AppRoute.SIGN_IN} component={LoginScreen} />
   </Stack.Navigator>
 );

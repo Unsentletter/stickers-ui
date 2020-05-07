@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { View, TouchableWithoutFeedback, AsyncStorage } from 'react-native';
+import {
+  View,
+  TouchableWithoutFeedback,
+  AsyncStorage,
+  Text,
+} from 'react-native';
 import { useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import { bindActionCreators } from 'redux';
@@ -8,17 +13,18 @@ import { TextInput, Button } from 'react-native-paper';
 
 import { addUser } from '../actions/UserActions';
 import { AppRoute } from '../navigation/AppRoutes';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export const SignupScreen = (props) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [addUser, { data, loading, error }] = useMutation(ADD_USER, {
     onCompleted(data) {
       saveUserDataLocally(data);
     },
   });
-  const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   // const renderIcon = (props) => (
   //   <TouchableWithoutFeedback
@@ -39,10 +45,10 @@ export const SignupScreen = (props) => {
     await addUser({ variables: { name, email, password } });
   };
 
-  const saveUserDataLocally = async (mutationData) => {
-    mutationData.signup.user.isSignedIn = true;
-    props.addUser(mutationData.signup.user);
-    await AsyncStorage.setItem('sessionToken', mutationData.signup.token);
+  const saveUserDataLocally = async ({ signup }) => {
+    signup.user.isSignedIn = true;
+    props.addUser(signup.user);
+    await AsyncStorage.setItem('sessionToken', signup.token);
     props.navigation.navigate(AppRoute.HOME);
   };
 
@@ -75,6 +81,11 @@ export const SignupScreen = (props) => {
       >
         Submit
       </Button>
+      <TouchableOpacity
+        onPress={() => props.navigation.navigate(AppRoute.SIGN_IN)}
+      >
+        <Text>Sign in</Text>
+      </TouchableOpacity>
     </View>
   );
 };
