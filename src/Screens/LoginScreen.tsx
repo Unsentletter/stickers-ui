@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { addUser } from '../actions/UserActions';
 import { AppRoute } from '../navigation/AppRoutes';
 
-export const LoginScreen = (props) => {
+export const LoginScreen = ({ addUser, navigation }: LoginScreenProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -33,9 +33,9 @@ export const LoginScreen = (props) => {
 
   const saveUserDataLocally = async ({ signin }) => {
     signin.user.isSignedIn = true;
-    props.addUser(signin.user);
+    addUser(signin.user);
     await AsyncStorage.setItem('sessionToken', signin.token);
-    props.navigation.navigate(AppRoute.HOME);
+    navigation.navigate(AppRoute.HOME);
   };
 
   return (
@@ -88,3 +88,8 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+type LoginScreenProps = {
+  addUser: any;
+  navigation: any;
+};

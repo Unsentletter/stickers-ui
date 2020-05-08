@@ -7,7 +7,7 @@ import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 
 const Stack = createStackNavigator();
 
-export const MainNavigator = (props): React.ReactElement => (
+export const MainNavigator = (props: string): React.ReactElement => (
   <Stack.Navigator {...props} headerMode='none'>
     <Stack.Screen name={AppRoute.AUTH_LOADING} component={AuthLoadingScreen} />
     <Stack.Screen name={AppRoute.AUTH} component={AuthNavigator} />
