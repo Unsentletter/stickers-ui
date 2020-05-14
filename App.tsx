@@ -1,15 +1,14 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import ApolloClient, { gql } from 'apollo-boost';
+import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
 import { Provider as PaperProvider } from 'react-native-paper';
+import { AsyncStorage } from 'react-native';
 
-import userReducer from './src/reducers/UserReducer';
+import store from './src/store/configureStore';
 import { MainNavigator } from './src/navigation/Main.navigator';
 import { AppRoute } from './src/navigation/AppRoutes';
-import { AsyncStorage } from 'react-native';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000',
@@ -22,8 +21,6 @@ const client = new ApolloClient({
     });
   },
 });
-
-const store = createStore(userReducer);
 
 export default function App() {
   return (
