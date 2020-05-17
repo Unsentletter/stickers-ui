@@ -3,18 +3,18 @@ import { View, AsyncStorage } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import { useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { addUser } from '../actions/UserActions';
+import { createUser } from '../actions/UserActions';
 import { AppRoute } from '../navigation/AppRoutes';
+import { IUser } from '../types/User';
 
-export const LoginScreen = ({ addUser, navigation }: LoginScreenProps) => {
+export const LoginScreen = ({ navigation }: ILoginScreenProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
-  const [loginUser, { data, loading, error }] = useMutation(LOGIN_USER, {
+  const [loginUser] = useMutation(LOGIN_USER, {
     onCompleted(data) {
       saveUserDataLocally(data);
     },
@@ -31,9 +31,10 @@ export const LoginScreen = ({ addUser, navigation }: LoginScreenProps) => {
     await loginUser({ variables: { name, email, password } });
   };
 
-  const saveUserDataLocally = async ({ signin }) => {
-    signin.user.isSignedIn = true;
-    addUser(signin.user);
+  const saveUserDataLocally = async ({ signin }: ILoginReturnObjectType) => {
+    const { user } = signin;
+    user.isSignedIn = true;
+    createUser(signin.user);
     await AsyncStorage.setItem('sessionToken', signin.token);
     navigation.navigate(AppRoute.HOME);
   };
@@ -42,14 +43,18 @@ export const LoginScreen = ({ addUser, navigation }: LoginScreenProps) => {
     <View>
       <TextInput
         label='email'
-        onChangeText={(nextValue) => setEmail(nextValue)}
+        onChangeText={(value: string) => {
+          return setEmail(value);
+        }}
         value={email}
         testID='emailInput'
       />
       <TextInput
         label='Password'
         secureTextEntry={secureTextEntry}
-        onChangeText={(nextValue) => setPassword(nextValue)}
+        onChangeText={(value: string) => {
+          return setPassword(value);
+        }}
         value={password}
         testID='passwordInput'
       />
@@ -65,15 +70,11 @@ export const LoginScreen = ({ addUser, navigation }: LoginScreenProps) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      addUser,
-    },
-    dispatch,
-  );
+const actionCreators = {
+  createUser,
+};
 
-export default connect(null, mapDispatchToProps)(LoginScreen);
+export default connect(null, actionCreators)(LoginScreen);
 
 export const LOGIN_USER = gql`
   mutation SignIn($email: String!, $password: String!) {
@@ -89,7 +90,13 @@ export const LOGIN_USER = gql`
   }
 `;
 
-type LoginScreenProps = {
-  addUser: any;
+interface ILoginScreenProps {
   navigation: any;
-};
+}
+
+interface ILoginReturnObjectType {
+  signin: {
+    user: IUser;
+    token: string;
+  };
+}

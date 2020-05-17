@@ -1,28 +1,23 @@
 import React, { useState } from 'react';
-import {
-  View,
-  TouchableWithoutFeedback,
-  AsyncStorage,
-  Text,
-} from 'react-native';
+import { View, AsyncStorage, Text } from 'react-native';
 import { useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { TextInput, Button } from 'react-native-paper';
 
-import { addUser } from '../actions/UserActions';
-import { AppRoute } from '../navigation/AppRoutes';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { createUser } from '../actions/UserActions';
+import { AppRoute } from '../navigation/AppRoutes';
+import { IUser } from '../types/User';
 
-export const SignupScreen = (props) => {
+export const SignupScreen = (props: SignupScreenProps) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const [addUser, { data, loading, error }] = useMutation(ADD_USER, {
-    onCompleted(data) {
-      saveUserDataLocally(data);
+  // const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [createUserMutation] = useMutation(CREATE_USER_MUTATION, {
+    onCompleted(userData) {
+      saveUserDataLocally(userData);
     },
   });
 
@@ -42,12 +37,13 @@ export const SignupScreen = (props) => {
   };
 
   const signupUser = async () => {
-    await addUser({ variables: { name, email, password } });
+    await createUserMutation({ variables: { name, email, password } });
   };
 
-  const saveUserDataLocally = async ({ signup }) => {
-    signup.user.isSignedIn = true;
-    props.addUser(signup.user);
+  const saveUserDataLocally = async ({ signup }: signupReturnObjectType) => {
+    const { user } = signup;
+    user.isSignedIn = true;
+    props.createUser(user);
     await AsyncStorage.setItem('sessionToken', signup.token);
     props.navigation.navigate(AppRoute.HOME);
   };
@@ -56,20 +52,27 @@ export const SignupScreen = (props) => {
     <View>
       <TextInput
         label='Name'
-        onChangeText={(nextValue) => setName(nextValue)}
+        onChangeText={(text: string) => {
+          return setName(text);
+        }}
         value={name}
         testID='nameInput'
       />
       <TextInput
         label='Email'
-        onChangeText={(nextValue) => setEmail(nextValue)}
+        onChangeText={(text: string) => {
+          return setEmail(text);
+        }}
         value={email}
         testID='emailInput'
       />
       <TextInput
         label='Password'
-        secureTextEntry={secureTextEntry}
-        onChangeText={(nextValue) => setPassword(nextValue)}
+        // secureTextEntry={secureTextEntry}
+        secureTextEntry
+        onChangeText={(text: string) => {
+          return setPassword(text);
+        }}
         value={password}
         testID='passwordInput'
       />
@@ -82,7 +85,9 @@ export const SignupScreen = (props) => {
         Submit
       </Button>
       <TouchableOpacity
-        onPress={() => props.navigation.navigate(AppRoute.SIGN_IN)}
+        onPress={() => {
+          return props.navigation.navigate(AppRoute.SIGN_IN);
+        }}
       >
         <Text>Sign in</Text>
       </TouchableOpacity>
@@ -90,17 +95,21 @@ export const SignupScreen = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      addUser,
-    },
-    dispatch,
-  );
+// This is my mapStateToProps as an object
+const actionCreators = {
+  createUser,
+};
 
-export default connect(null, mapDispatchToProps)(SignupScreen);
+// TODO - This is just an example for when I need it in the future
+// const mapStateToProps = (state: AppState, ownProps: SignupScreenProps) => {
+//   // Whatever goes in here
+//   console.log(state);
+//   console.log(ownProps);
+// };
 
-export const ADD_USER = gql`
+export default connect(null, actionCreators)(SignupScreen);
+
+export const CREATE_USER_MUTATION = gql`
   mutation SignUp($name: String!, $email: String!, $password: String!) {
     signup(name: $name, email: $email, password: $password) {
       user {
@@ -113,3 +122,15 @@ export const ADD_USER = gql`
     }
   }
 `;
+
+interface SignupScreenProps {
+  navigation: any;
+  createUser: any;
+}
+
+interface signupReturnObjectType {
+  signup: {
+    user: IUser;
+    token: string;
+  };
+}

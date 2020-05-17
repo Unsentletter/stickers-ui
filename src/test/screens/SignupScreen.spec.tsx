@@ -88,7 +88,7 @@ describe('SignupScreen', () => {
       fireEvent.press(component.getByTestId('submitButton'));
 
       await wait(0);
-      const tree = await waitForElement(() => component.toJSON());
+      const tree = await waitForElement(() => { return component.toJSON(); });
       expect(tree.children[0].props.value).toContain('Trit');
       expect(tree.children[1].props.value).toContain('test@email.com');
       expect(tree.children[2].props.value).toContain('123456');

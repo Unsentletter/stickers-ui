@@ -3,6 +3,6 @@ export interface IUser {
   name: string;
   email?: string;
   isChild: Boolean;
-  isSignIn: Boolean;
+  isSignedIn?: Boolean;
   children: IUser[];
 }

@@ -7,12 +7,18 @@ import { IUser } from '../types/User';
 import { AppRoute } from '../navigation/AppRoutes';
 
 const HomeScreen = ({ navigation, user }: HomeScreenProps) => {
-  console.log('USER', user);
   return (
     <View>
       <Text>HOME SCREEN</Text>
-      <Text>USER: {user.name}</Text>
-      <Button onPress={() => navigation.navigate(AppRoute.ADD_CHILD)}>
+      <Text>
+        USER:
+        {user.name}
+      </Text>
+      <Button
+        onPress={() => {
+          return navigation.navigate(AppRoute.ADD_CHILD);
+        }}
+      >
         Add a child
       </Button>
       <Button
@@ -29,12 +35,13 @@ const HomeScreen = ({ navigation, user }: HomeScreenProps) => {
 };
 
 const mapStateToProps = (state) => {
-  const user = state.user;
-  return { user };
+  const { userReducer } = state;
+  return { user: userReducer[0] };
 };
 
 type HomeScreenProps = {
   user: IUser;
+  navigation: any;
 };
 
 export default connect(mapStateToProps)(HomeScreen);

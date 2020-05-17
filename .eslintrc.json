@@ -1,0 +1,43 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "extends": ["plugin:react/recommended", "airbnb"],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": ["react", "@typescript-eslint"],
+  "rules": {
+    "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }],
+    "react/prop-types": 0,
+    "eqeqeq": ["error", "always"],
+    "quotes": ["error", "single"],
+    "jsx-quotes": ["error", "prefer-single"],
+    "comma-dangle": ["error", "always-multiline"],
+    "no-unneeded-ternary": "error",
+    "prefer-const": "error",
+    "prefer-destructuring": "error",
+    "no-duplicate-imports": "error",
+    "import/extensions": ["error", "never"],
+    "arrow-parens": [2, "as-needed"],
+    "implicit-arrow-linebreak": "off",
+    "max-len": ["error", 120],
+    "operator-linebreak": ["error", "after"],
+    "function-paren-newline": "off",
+    "no-return-assign": [2, "except-parens"],
+    "object-shorthand": ["error", "always", { "avoidQuotes": true }],
+    "arrow-body-style": ["error", "always"],
+    "import/no-unresolved": "off",
+    "no-use-before-define": 0
+  }
+}

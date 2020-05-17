@@ -1,40 +1,40 @@
-import { combineReducers } from 'redux';
+import { IUser } from '../types/User';
+import { UserActionTypes } from '../types/actions';
 
-const INITIAL_STATE = {
-  user: {},
-};
+const userReducerDefaultState: IUser[] = [];
 
-const userReducer = (state = INITIAL_STATE, action) => {
-  const { payload } = action;
+const userReducer = (
+  state = userReducerDefaultState,
+  action: UserActionTypes,
+): IUser[] => {
   switch (action.type) {
-    case 'ADD_USER':
-      const user = {
-        id: payload.id,
-        name: payload.name,
-        email: payload.email,
-        isChild: payload.ischild,
-        children: payload.children,
+    case 'CREATE_USER':
+      const { user } = action;
+      const newUser = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        isChild: user.ischild,
+        children: user.children,
       };
-      return user;
+      return [newUser];
+
     case 'ADD_CHILD_TO_USER':
       const parent = { ...state.user };
       const child = {
-        id: payload.id,
-        name: payload.name,
-        isChild: payload.ischild,
+        id: action.id,
+        name: action.name,
+        isChild: action.ischild,
       };
       if (parent.children) {
         parent.child = [...parent.child, child];
       } else {
         parent.child = [child];
       }
-      console.log('state', state);
-      return parent;
+      return [...state, parent];
     default:
       return state;
   }
 };
 
-export default combineReducers({
-  user: userReducer,
-});
+export default userReducer;

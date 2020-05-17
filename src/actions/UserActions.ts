@@ -1,11 +1,16 @@
 import { IUser } from '../types/User';
+import { AppActions } from '../types/actions';
 
-export const addUser = (user: IUser) => ({
-  type: 'ADD_USER',
-  payload: user,
-});
+export const createUser = (user: IUser): AppActions => {
+  return {
+    type: 'CREATE_USER',
+    user,
+  };
+};
 
-export const addChildToUser = (child) => ({
-  type: 'ADD_CHILD_TO_USER',
-  payload: child,
-});
+export const addChildToUser = (child: IUser): AppActions => {
+  return {
+    type: 'ADD_CHILD_TO_USER',
+    child,
+  };
+};

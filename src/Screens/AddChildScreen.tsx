@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, TouchableWithoutFeedback } from 'react-native';
+import { Text, View } from 'react-native';
 import { useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import { bindActionCreators } from 'redux';
@@ -7,9 +7,8 @@ import { connect } from 'react-redux';
 import { TextInput, Button } from 'react-native-paper';
 
 import { addChildToUser } from '../actions/UserActions';
-import { IUser } from '../types/User';
 
-const AddChildScreen = ({ user, addChildToUser }: AddChildScreenProps) => {
+const AddChildScreen = ({ addChildToUser }: AddChildScreenProps) => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -43,13 +42,17 @@ const AddChildScreen = ({ user, addChildToUser }: AddChildScreenProps) => {
       <Text>Add Child screen</Text>
       <TextInput
         label='Name'
-        onChangeText={(nextValue) => setName(nextValue)}
+        onChangeText={(nextValue) => {
+          return setName(nextValue);
+        }}
         value={name}
       />
       <TextInput
         label='Password'
         secureTextEntry={secureTextEntry}
-        onChangeText={(nextValue) => setPassword(nextValue)}
+        onChangeText={(nextValue) => {
+          return setPassword(nextValue);
+        }}
         value={password}
       />
       <Button onPress={addSingleChild}>Add child</Button>
@@ -62,23 +65,22 @@ const AddChildScreen = ({ user, addChildToUser }: AddChildScreenProps) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
     {
       addChildToUser,
     },
     dispatch,
   );
+};
 
 const mapStateToProps = (state) => {
-  const user = state.user;
+  const { user } = state;
   console.log('MSTP', state);
   return { user };
 };
 
-type AddChildScreenProps = {
-  user: IUser;
-};
+type AddChildScreenProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddChildScreen);
 
