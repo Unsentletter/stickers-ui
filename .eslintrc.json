@@ -32,7 +32,11 @@
     "arrow-parens": [2, "as-needed"],
     "implicit-arrow-linebreak": "off",
     "max-len": ["error", 120],
-    "operator-linebreak": ["error", "after"],
+    "operator-linebreak": [
+      "error",
+      "before",
+      { "overrides": { "=": "after" } }
+    ],
     "function-paren-newline": "off",
     "no-return-assign": [2, "except-parens"],
     "object-shorthand": ["error", "always", { "avoidQuotes": true }],

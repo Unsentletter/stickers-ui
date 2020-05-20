@@ -2,20 +2,20 @@ import React, { useState } from 'react';
 import { Text, View } from 'react-native';
 import { useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { TextInput, Button } from 'react-native-paper';
 
 import { addChildToUser } from '../actions/UserActions';
+import { IUser } from '../types/User';
+import { AppState } from '../store/configureStore';
 
-const AddChildScreen = ({ addChildToUser }: AddChildScreenProps) => {
+const AddChildScreen = () => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [children, setChildren] = useState<IUser[]>([]);
   const [createChildAccount, { data }] = useMutation(CREATE_CHILD_ACCOUNT, {
-    onCompleted(data) {
-      const { createChildAccount } = data;
+    onCompleted() {
       const childrenArray =
         children.length > 0
           ? [...children, createChildAccount]
@@ -42,22 +42,22 @@ const AddChildScreen = ({ addChildToUser }: AddChildScreenProps) => {
       <Text>Add Child screen</Text>
       <TextInput
         label='Name'
-        onChangeText={(nextValue) => {
-          return setName(nextValue);
+        onChangeText={(value: string) => {
+          return setName(value);
         }}
         value={name}
       />
       <TextInput
         label='Password'
         secureTextEntry={secureTextEntry}
-        onChangeText={(nextValue) => {
-          return setPassword(nextValue);
+        onChangeText={(value: string) => {
+          return setPassword(value);
         }}
         value={password}
       />
       <Button onPress={addSingleChild}>Add child</Button>
       {children.length > 1
-        ? children.map((child) => {
+        ? children.map((child: IUser) => {
             return <Text key={child.id}>{child.name}</Text>;
           })
         : null}
@@ -65,24 +65,16 @@ const AddChildScreen = ({ addChildToUser }: AddChildScreenProps) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(
-    {
-      addChildToUser,
-    },
-    dispatch,
-  );
+const actionCreators = {
+  addChildToUser,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: AppState) => {
   const { user } = state;
-  console.log('MSTP', state);
   return { user };
 };
 
-type AddChildScreenProps = {};
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddChildScreen);
+export default connect(mapStateToProps, actionCreators)(AddChildScreen);
 
 const CREATE_CHILD_ACCOUNT = gql`
   mutation CreateChildAccount($name: String!, $password: String!) {
