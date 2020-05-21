@@ -1,4 +1,4 @@
-export enum AppRoute {
+enum AppRoute {
   AUTH_LOADING = 'Auth loading',
   AUTH = 'Authhhh',
   SIGN_UP = 'Sign up',
@@ -6,3 +6,5 @@ export enum AppRoute {
   HOME = 'Home',
   ADD_CHILD = 'Add child',
 }
+
+export default AppRoute;

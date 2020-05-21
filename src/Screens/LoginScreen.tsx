@@ -6,7 +6,7 @@ import { gql } from 'apollo-boost';
 import { connect } from 'react-redux';
 
 import { createUser } from '../actions/UserActions';
-import { AppRoute } from '../navigation/AppRoutes';
+import AppRoute from '../navigation/AppRoutes';
 import { IUser } from '../types/User';
 
 export const LoginScreen = ({ navigation }: ILoginScreenProps) => {

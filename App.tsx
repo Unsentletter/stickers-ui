@@ -7,8 +7,8 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import { AsyncStorage } from 'react-native';
 
 import store from './src/store/configureStore';
-import { MainNavigator } from './src/navigation/Main.navigator';
-import { AppRoute } from './src/navigation/AppRoutes';
+import MainNavigator from './src/navigation/MainNavigator';
+import AppRoute from './src/navigation/AppRoutes';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000',

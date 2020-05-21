@@ -1,13 +1,13 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { AppRoute } from './AppRoutes';
+import AppRoute from './AppRoutes';
 
 import HomeScreen from '../screens/HomeScreen';
 import AddChildScreen from '../screens/AddChildScreen';
 
 const Stack = createStackNavigator();
 
-export const AppNavigator = (): React.ReactElement => {
+const AppNavigator = (): React.ReactElement => {
   return (
     <Stack.Navigator>
       <Stack.Screen name={AppRoute.HOME} component={HomeScreen} />
@@ -15,3 +15,5 @@ export const AppNavigator = (): React.ReactElement => {
     </Stack.Navigator>
   );
 };
+
+export default AppNavigator;

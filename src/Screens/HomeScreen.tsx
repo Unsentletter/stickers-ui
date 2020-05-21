@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { Button } from 'react-native-paper';
 
 import { IUser } from '../types/User';
-import { AppRoute } from '../navigation/AppRoutes';
+import AppRoute from '../navigation/AppRoutes';
+import { AppState } from '../store/configureStore';
 
 const HomeScreen = ({ navigation, user }: HomeScreenProps) => {
   return (
@@ -34,7 +35,7 @@ const HomeScreen = ({ navigation, user }: HomeScreenProps) => {
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: AppState) => {
   const { userReducer } = state;
   return { user: userReducer[0] };
 };

@@ -42,6 +42,7 @@
     "object-shorthand": ["error", "always", { "avoidQuotes": true }],
     "arrow-body-style": ["error", "always"],
     "import/no-unresolved": "off",
-    "no-use-before-define": 0
+    "no-use-before-define": 0,
+    "react/jsx-props-no-spreading": 0
   }
 }

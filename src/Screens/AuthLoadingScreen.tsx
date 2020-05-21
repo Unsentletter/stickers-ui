@@ -4,11 +4,12 @@ import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { connect } from 'react-redux';
 
-import { AppRoute } from '../navigation/AppRoutes';
+import AppRoute from '../navigation/AppRoutes';
 import { createUser } from '../actions/UserActions';
 
-const AuthLoadingScreen: React.FC<AuthLoadingScreenProps> = (props) => {
-  const { navigation } = props;
+const AuthLoadingScreen: React.FC<AuthLoadingScreenProps> = ({
+  navigation,
+}: AuthLoadingScreenProps) => {
   const { data } = useQuery(GET_USER);
 
   const bootstrapAsync = async () => {
@@ -65,7 +66,7 @@ const GET_USER = gql`
     getUser {
       id
       email
-      name
+      user
       ischild
       created_at
       children

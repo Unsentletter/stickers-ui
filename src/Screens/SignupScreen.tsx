@@ -7,11 +7,11 @@ import { TextInput, Button } from 'react-native-paper';
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { createUser } from '../actions/UserActions';
-import { AppRoute } from '../navigation/AppRoutes';
+import AppRoute from '../navigation/AppRoutes';
 import { IUser } from '../types/User';
 
 export const SignupScreen = (props: SignupScreenProps) => {
-  const [name, setName] = useState('');
+  const [name, setname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   // const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -53,7 +53,7 @@ export const SignupScreen = (props: SignupScreenProps) => {
       <TextInput
         label='Name'
         onChangeText={(text: string) => {
-          return setName(text);
+          return setname(text);
         }}
         value={name}
         testID='nameInput'
