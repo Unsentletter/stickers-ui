@@ -5,8 +5,9 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { Provider } from 'react-redux';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { AsyncStorage } from 'react-native';
+import { PersistGate } from 'redux-persist/integration/react';
 
-import store from './src/store/configureStore';
+import { store, persistor } from './src/store/configureStore';
 import MainNavigator from './src/navigation/MainNavigator';
 import AppRoute from './src/navigation/AppRoutes';
 
@@ -26,11 +27,13 @@ export default function App() {
   return (
     <ApolloProvider client={client}>
       <Provider store={store}>
-        <PaperProvider>
-          <NavigationContainer>
-            <MainNavigator initialRouteName={AppRoute.AUTH_LOADING} />
-          </NavigationContainer>
-        </PaperProvider>
+        <PersistGate loading={null} persistor={persistor}>
+          <PaperProvider>
+            <NavigationContainer>
+              <MainNavigator initialRouteName={AppRoute.AUTH_LOADING} />
+            </NavigationContainer>
+          </PaperProvider>
+        </PersistGate>
       </Provider>
     </ApolloProvider>
   );
